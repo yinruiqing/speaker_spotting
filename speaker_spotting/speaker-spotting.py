@@ -1,9 +1,9 @@
 """
 Speaker-spotting
 Usage:
-  speaker-spotting.py oracle [--subset=<subset>] <database.task.protocol> <output_file>
-  speaker-spotting.py automatic [--subset=<subset>] <database.task.protocol> <diarization.mdtm> <output_file>
-  speaker-spotting.py segment [--subset=<subset> --automatic-sad --sad=<sad.mdtm>] <database.task.protocol> <output_file>
+  speaker-spotting.py oracle [--subset=<subset>] <embedding_path> <database.task.protocol> <output_file>
+  speaker-spotting.py automatic [--subset=<subset>] <embedding_path> <database.task.protocol> <diarization.mdtm> <output_file>
+  speaker-spotting.py segment [--subset=<subset> --automatic-sad --sad=<sad.mdtm>] <embedding_path> <database.task.protocol> <output_file>
   speaker-spotting.py -h | --help
   speaker-spotting.py --version
 Options:
@@ -162,13 +162,14 @@ if __name__ == '__main__':
     arguments = docopt(__doc__, version='Speaker-spotting')
     # protocol
     protocol_name = arguments['<database.task.protocol>']
+    embedding_path = arguments['<embedding_path>']
     protocol = get_protocol(protocol_name, progress=True)
 
     # subset (train, development, or test)
     subset = arguments['--subset']
     output_file = arguments['<output_file>']
     from pyannote.audio.features import Precomputed
-    precomputed = Precomputed('/vol/work1/bredin/speaker_spotting/embeddings')
+    precomputed = Precomputed(embedding_path)
 
     models = {}
     enrolments = getattr(protocol, '{subset}_enrolment'.format(subset=subset))()
