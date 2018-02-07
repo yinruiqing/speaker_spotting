@@ -118,7 +118,10 @@ def speaker_spotting_try_segment(current_trial):
     first, last = indices[0], indices[-1]
 
     speech_timeline = SPEECH[current_trial['uri']].crop(current_trial['try_with']).get_timeline().support()
-    indices_speech = embeddings.sliding_window.crop(speech_timeline, mode='strict')
+    if len(speech_timeline) == 0:
+        indices_speech = []
+    else:
+        indices_speech = embeddings.sliding_window.crop(speech_timeline, mode='strict')
 
     # compare all embeddings to target model
     scores = 2. - cdist(embeddings.data, model, metric='cosine')
