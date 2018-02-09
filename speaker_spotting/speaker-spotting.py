@@ -144,7 +144,7 @@ def speaker_spotting_try_segment(current_trial):
 
 
 def process_score(scores):
-    min_score = 0
+    min_score = -1
     res = []
     for (window, score) in scores:
         if score > min_score:
